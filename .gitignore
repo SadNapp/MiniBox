@@ -1,0 +1,16 @@
+**/bin/
+**/obj/
+.vs/
+.idea/
+*.user
+
+[Tt]emp/
+[Ll]og/
+*.suo
+*.userossc
+
+NewFile1.txt
+ReadMe.txt
+
+*.nupkg
+**/packages/

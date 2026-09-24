@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\Orders\Commands\CreateOrder\" />
+      <Folder Include="Features\Orders\Queries\GetUserOrders\" />
+      <Folder Include="Features\Products\Commands\UpdateStock\" />
+      <Folder Include="Features\Products\Queries\GetProductById\" />
+      <Folder Include="Features\Products\Queries\GetProductsCatalog\" />
+      <Folder Include="Features\Users\Commands\LoginUser\" />
+      <Folder Include="Features\Users\Commands\RegisterUser\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MiniBox.Domain\MiniBox.Domain.csproj" />
+    </ItemGroup>
+
+</Project>
