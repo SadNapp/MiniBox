@@ -20,4 +20,8 @@
         <Using Include="NUnit.Framework"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Core\MiniBox.Domain\MiniBox.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

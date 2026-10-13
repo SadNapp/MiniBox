@@ -20,4 +20,10 @@
         <Using Include="NUnit.Framework"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Core\MiniBox.Application\MiniBox.Application.csproj" />
+        <ProjectReference Include="..\..\src\Core\MiniBox.Domain\MiniBox.Domain.csproj" />
+        <PackageReference Include="FluentValidation" Version="12.1.1" />
+    </ItemGroup>
+
 </Project>

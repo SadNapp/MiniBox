@@ -2,7 +2,7 @@ using MiniBox.Domain.Common;
 
 namespace MiniBox.Domain.Entities.Products;
 
-public class ProductAttribute : BaseEntity
+public class ProductAttribute : BaseAuditableEntity
 {
     public Guid ProductId { get; set; }
     public Product Product { get; set; } = null!;

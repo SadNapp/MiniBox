@@ -1,23 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <Folder Include="Features\Orders\Commands\CreateOrder\" />
-      <Folder Include="Features\Orders\Queries\GetUserOrders\" />
-      <Folder Include="Features\Products\Commands\UpdateStock\" />
-      <Folder Include="Features\Products\Queries\GetProductById\" />
-      <Folder Include="Features\Products\Queries\GetProductsCatalog\" />
-      <Folder Include="Features\Users\Commands\LoginUser\" />
-      <Folder Include="Features\Users\Commands\RegisterUser\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\MiniBox.Domain\MiniBox.Domain.csproj" />
-    </ItemGroup>
-
+  <PropertyGroup><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup>
+  <ItemGroup><ProjectReference Include="..\MiniBox.Domain\MiniBox.Domain.csproj" /></ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+  </ItemGroup>
 </Project>

@@ -1,5 +1,8 @@
 **/bin/
 **/obj/
+**/node_modules/
+**/dist/
+**/*.tsbuildinfo
 .vs/
 .idea/
 *.user
@@ -14,3 +17,7 @@ ReadMe.txt
 
 *.nupkg
 **/packages/
+.fake
+.env
+.env.*
+!.env.example

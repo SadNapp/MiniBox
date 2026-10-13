@@ -2,7 +2,7 @@ using MiniBox.Domain.Common;
 
 namespace MiniBox.Domain.Entities.Orders;
 
-public class OrderItem : BaseEntity
+public class OrderItem : BaseAuditableEntity
 {
     public Guid OrderId { get; set; } 
     public Guid ProductId { get; set; } 

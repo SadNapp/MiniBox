@@ -1,6 +1,5 @@
+﻿using Microsoft.AspNetCore.SignalR;
+
 namespace MiniBox.API.Hubs;
 
-public class StoreEventsHub
-{
-    
-}
+public sealed class StoreEventsHub : Hub;

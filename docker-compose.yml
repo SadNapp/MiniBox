@@ -1,0 +1,103 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: minibox
+      POSTGRES_USER: minibox
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports: ["5432:5432"]
+    volumes: ["postgres_data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U minibox -d minibox"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: src/Presentation/MiniBox.API/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=minibox;Username=minibox;Password=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      ConnectionStrings__Redis: redis:6379
+      Jwt__SigningKey: ${JWT_SIGNING_KEY:?Set JWT_SIGNING_KEY (at least 32 characters) in .env}
+      Frontend__Origin: http://localhost:8080
+    ports: ["8081:8080"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "dotnet", "/app/MiniBox.API.dll", "--health-check"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        VITE_API_URL: http://localhost:8081
+    ports: ["8080:80"]
+    depends_on:
+      api: { condition: service_healthy }
+
+  simulator:
+    build:
+      context: .
+      dockerfile: src/Presentation/MiniBox.SimulationEngine/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=minibox;Username=minibox;Password=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      Simulation__TargetApiUrl: http://api:8080
+      Simulation__UserCount: 10000
+      Simulation__VirtualConnectionCount: 1200
+      Simulation__RequestsPerSecond: 10
+      Simulation__SeedProductCount: 50000
+      Simulation__SeedUserCount: 10000
+      Simulation__VirtualUserPassword: ${SIMULATION_USER_PASSWORD:?Set SIMULATION_USER_PASSWORD in .env}
+    depends_on:
+      api: { condition: service_healthy }
+
+  prometheus:
+    image: prom/prometheus:v3.14.0
+    command: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus"]
+    ports: ["9090:9090"]
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    depends_on:
+      api: { condition: service_healthy }
+
+  grafana:
+    image: grafana/grafana:13.2.0
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:?Set GRAFANA_USER in .env}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:?Set GRAFANA_PASSWORD in .env}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    ports: ["3000:3000"]
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      prometheus: { condition: service_started }
+
+volumes:
+  postgres_data:
+  prometheus_data:
+  grafana_data:
+
+
+
+
+
+
